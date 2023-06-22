@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>basic0512</display-name>
+  <context-param>
+	<param-name>log4jConfigLocation</param-name>
+	<param-value>/WEB-INF/classes/log4j.properties</param-value>
+  </context-param>
+  <servlet>
+  	<servlet-name>FrontMVC1</servlet-name>
+  	<servlet-class>com.example.demo.pojo1.FrontMVC</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FrontMVC1</servlet-name>
+  	<url-pattern>*.pj1</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>FrontMVC2</servlet-name>
+  	<servlet-class>com.example.demo.pojo2.ActionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FrontMVC2</servlet-name>
+  	<url-pattern>*.pj2</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>FrontMVC3</servlet-name>
+  	<servlet-class>com.example.demo.pojo3.ActionSupport</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>FrontMVC3</servlet-name>
+  	<url-pattern>*.pj3</url-pattern>
+  </servlet-mapping>
+  <servlet>
+  	<servlet-name>KakaoAPI</servlet-name>
+  	<servlet-class>com.example.demo.pojo3.KakaoSupport</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>KakaoAPI</servlet-name>
+  	<url-pattern>/auth/*</url-pattern>
+  </servlet-mapping>
+ </web-app>
+<!-- 
+xml 주석은 html주석과 동일함
+서블릿에 대한 url매핑을 하는 방법에는 2가지가 있다
+하나는 어노테이션을 사용하는 방법 - 기존에 실습했던 방법
+두번째는 web.xml에 하는 방법
+<servlet>와 servlet-mapping태그가 한쌍임
+서버가 기동할 때 web.xml문서를 읽음
+1) servlet-mapping에 url-pattern을 먼저 참조함
+2) servlet-name의 값과 동일한 servlet태그를 찾음
+3) 같은 값을 갖는 servlet-class를 찾아서 호출해줌(Tomcat이 자동으로 찾음-doGet에 해당됨)
+개발자가 직접 호출할수 없다
+개발자나 사용자는 url-pattern으로 요청하면 톰캣이 찾아서 호출해줌
+
+xml문서는 html과는 달리 문법체크와 유효성 체크를 하마르 오타가 있거나 문제있는 코드가 발견되면
+서버가 기동이 전혀 안됨 - 민감
+
+SAXXXXException이나 ParserXXXException발생하면 모두 xml문서의 오타임
+html과 같이 markup language이나 훨씬 더 엄격한 파일임
+
+url패턴에 어떤(*:와일드카드, 아스터리스크) 이름이 오더라도 확장자가 pj1으로 끝나면
+FrontMVC.java가 인터셉트 한다.
+ -->

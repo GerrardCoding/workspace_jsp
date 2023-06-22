@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.DeptMapper">
+    <resultMap id="deptMap" type="com.vo.DeptVO">
+    </resultMap>
+	<delete id="deptDelete">
+		DELETE FROM dept
+		 WHERE deptno IN
+		<foreach item="item" index="index" collection="array"
+				open="(" separator="," close=")">
+			#{item}
+		</foreach>		 	
+	</delete>
+	<select id="test" resultType="com.vo.DeptVO" parameterType="com.vo.DeptVO">
+		SELECT deptno, dname, loc FROM dept
+		<where>
+			<if test="deptno!=0">
+				AND deptno = #{deptno}
+			</if>
+		</where>
+	</select>
+	<select id="deptList" resultType="java.util.Map" parameterType="map">
+		SELECT deptno, dname, loc FROM dept
+		<where>
+			<if test="deptno!=null">
+				AND deptno = #{deptno}
+			</if>
+		</where>
+	</select>
+	<update id="deptUpdate" parameterType="com.vo.DeptVO">
+		UPDATE dept
+		   SET dname = #{dname}
+		     , loc = #{loc}
+		 WHERE deptno = #{deptno}
+	</update>
+	<insert id="deptInsert" parameterType="com.vo.DeptVO">
+		INSERT INTO dept(deptno, dname, loc) VALUES(#{deptno},#{dname},#{loc})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+

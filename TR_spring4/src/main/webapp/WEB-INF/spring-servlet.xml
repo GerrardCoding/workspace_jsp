@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+	<bean id="default-handler-mapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
+	<tx:annotation-driven/>
+	<bean id="url-mapping"
+			class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+			<property name="mappings">
+				<props>
+					<prop key="/dept/deptList.sp4">dept-controller</prop>
+				</props>
+			</property>
+	</bean>				
+	<!-- DeptController는 스프링컨테이너가 객체주입을 관리해줌[dependency injection] 
+	spring-servlet.xml문서에 등록을 해두면 필요한 시점에 스프링엔진이 객체를 주입해줘서
+	NullPointerException발생하지 않음
+	xml을 몰라 -> 자바코딩 -> 자바도 안친하면... -> 어노테이션을 제공하게 되었다.
+	spring2.5 역사를보면 어노테이션 갯수가 제한적 -> spring 3.0 어노테이션의 갯수가 늘어남 ->
+	서블릿이 없이도 개발이 가능해짐
+	프레임워크는 잘 못하는 사람, 신입개발자를 배려함 - F/W - 일정을 관리 - 패널티
+	ReactJS -> NextJS 프레임워크 우대
+	-->
+	
+  	<bean id="dept-controller" class="com.erp.DeptController">
+		<property name="methodNameResolver" ref="dept-resolver"/>
+		<property name="deptLogic" ref="dept-logic"/>
+  	</bean>
+	<bean id="dept-resolver" class="org.springframework.web.servlet.mvc.multiaction.PropertiesMethodNameResolver">
+		<property name="mappings">
+			<props>
+				<prop key="/dept/deptList.sp4">deptList</prop>
+			</props>
+		</property>
+	</bean>
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+			<property name="prefix" value="/WEB-INF/views/" />
+			<property name="suffix" value=".jsp" />
+	</bean>	
+</beans>

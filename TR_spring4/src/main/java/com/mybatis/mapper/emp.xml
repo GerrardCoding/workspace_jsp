@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis.mapper.EmpMapper">
+    <resultMap id="empvoMap" type="com.vo.EmpVO">
+    </resultMap>
+    <select id="getEmp2" parameterType="java.util.Map" statementType="CALLABLE">
+    	{CALL GETEMP2(#{empno, mode=IN},
+    				 #{key, jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet,resultMap=empvoMap})}
+    </select>
+	<parameterMap type="hashmap" id="pMapEmp">
+		<parameter property="pempno" mode="IN" jdbcType="INTEGER" javaType="int"/>
+		<parameter property="msg" mode="OUT" jdbcType="VARCHAR" javaType="java.lang.String"/>
+	</parameterMap>
+	<select id="proc_emp_sal_update" statementType="CALLABLE" parameterMap="pMapEmp">
+		{ call SCOTT.proc_emp_sal_update(?,?) }
+	</select>
+	<select id="proc_emp_sal_update2" statementType="CALLABLE" parameterMap="pMapEmp">
+		{ call SCOTT.proc_emp_sal_update2(?,?) }
+	</select>
+	<delete id="empDelete">
+		DELETE FROM emp
+		 WHERE empno IN
+		<foreach item="item" index="index" collection="array"
+				open="(" separator="," close=")">
+			#{item}
+		</foreach>		 	
+	</delete>
+	<select id="getEmpList" resultType="com.vo.EmpVO" parameterType="com.vo.EmpVO">
+		SELECT empno, ename, mgr
+		      ,hiredate ,job ,sal
+		      ,comm, deptno 
+		  FROM emp
+		<where>
+			<if test="empno!=0">
+				AND empno = #{empno}
+			</if>
+		</where>
+	</select>
+	<update id="empUpdate" parameterType="com.vo.EmpVO">
+		UPDATE emp
+		   SET ename = #{ename}
+<!-- 		  ,job = #{job}
+		      ,mgr = #{mgr}
+		      ,hiredate = #{hiredate}
+		      ,sal = #{sal}
+		      ,comm = #{comm}
+		      ,deptno = #{deptno} -->
+		 WHERE empno = #{empno}
+	</update>
+	<insert id="empInsert" parameterType="com.vo.EmpVO">
+		INSERT INTO emp(empno, ename5, mgr
+		               ,hiredate,job,sal
+		               ,comm,deptno) 
+		         VALUES(
+		                 #{empno},#{ename},#{mgr}
+		                ,#{hiredate},#{job},#{sal}
+		                ,#{comm},#{deptno}
+		                )
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
